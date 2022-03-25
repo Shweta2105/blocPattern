@@ -1,3 +1,6 @@
+import 'package:blocprovider/screens/homescreen.dart';
+import 'package:blocprovider/screens/loginscreen.dart';
+import 'package:blocprovider/service/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/registerscreen.dart';
@@ -12,6 +15,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    AuthService.firebase().initialize();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
@@ -19,7 +23,13 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           accentColor: Colors.orangeAccent,
           fontFamily: 'SansitaSwashed'),
-      home: RegisterScreen(),
+      home: LoginScreen(),
+      // RegisterScreen(),
+      routes: {
+        HomeScreen.routeName: (context) => HomeScreen(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
+        LoginScreen.routeName: (context) => LoginScreen(),
+      },
     );
   }
 }

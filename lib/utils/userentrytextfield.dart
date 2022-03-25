@@ -1,4 +1,4 @@
- 
+import 'package:blocprovider/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class UserEntryTextField extends StatelessWidget {
@@ -25,7 +25,7 @@ class UserEntryTextField extends StatelessWidget {
         checkValidation(isValid);
       },
       style: const TextStyle(
-          fontStyle: FontStyle.normal, fontSize: 20, color: Colors.white),
+          fontStyle: FontStyle.normal, fontSize: 20, color: blackColor),
       decoration: InputDecoration(
         labelText: labelText,
         errorText: isValid ? null : "InValid Data",

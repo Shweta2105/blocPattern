@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../service/auth/auth_exception.dart';
+import '../service/auth/auth_service.dart';
 import '../utils/constants.dart';
 import '../utils/userentrytextfield.dart';
+import 'loginscreen.dart';
 
 class RegisterScreen extends StatefulWidget {
+  static const String routeName = '/signup';
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -107,7 +111,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(
                         fontSize: 20,
                       )),
-                  onPressed: () {}
+                  onPressed: () async {
+                    try {
+                      await AuthService.firebase().createUser(
+                        email: emailEditingController.text,
+                        password: passwordEditingController.text,
+                      );
+                      Navigator.of(context).pushNamed(LoginScreen.routeName);
+                    } on WeakPasswordAuthException catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Text('Weak Password');
+                          });
+                    } on EmailAlreadyInUseAuthException catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Text('This Email is Already in use. ');
+                          });
+                    } on InvalidEmailAuthException catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Text('Invalid Email Id');
+                          });
+                    } on GenericAuthException catch (e) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const Text('Failed to register');
+                          });
+                    }
+                  }
+                  //loginUser
                   //loginUser
                   ),
             ),

@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
 import 'package:firebase_core/firebase_core.dart';
@@ -87,6 +86,16 @@ class FirebaseAuthProvider implements AuthProvider {
       await FirebaseAuth.instance.signOut();
     } else {
       throw UserNotLoggedInException();
+    }
+  }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await user.sendEmailVerification();
+    } else {
+      UserNotLoggedInException();
     }
   }
 }
