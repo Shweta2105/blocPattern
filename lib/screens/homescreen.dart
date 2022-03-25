@@ -12,11 +12,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
         actions: [
           PopupMenuButton<MenuAction>(
               offset: const Offset(0.0, 60.0),
-              icon: new Icon(Icons.more_vert_rounded, color: whiteColor),
+              icon: const Icon(Icons.more_vert_rounded, color: whiteColor),
               onSelected: (value) async {
                 switch (value) {
                   case MenuAction.logout:
