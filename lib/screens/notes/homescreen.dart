@@ -1,10 +1,11 @@
 import 'package:blocprovider/screens/loginscreen.dart';
+import 'package:blocprovider/screens/notes/newnotescreen.dart';
 import 'package:blocprovider/service/crud/notes_service.dart';
 import 'package:blocprovider/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../enums/menu_acton.dart';
-import '../service/auth/auth_service.dart';
+import '../../enums/menu_acton.dart';
+import '../../service/auth/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -33,8 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Your Notes'),
         actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(NewNoteScreen.routeName); 
+              },
+              icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
               offset: const Offset(0.0, 60.0),
               icon: const Icon(Icons.more_vert_rounded, color: whiteColor),
@@ -65,15 +71,15 @@ class _HomeScreenState extends State<HomeScreen> {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
                 return StreamBuilder(
-                  stream: _notesService.allNotes,
-                  builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return const Text('Waiting for your notes.........');
-                    default:
-                      return const CircularProgressIndicator();
-                  }
-                });
+                    stream: _notesService.allNotes,
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Text('Waiting for your notes.........');
+                        default:
+                          return const CircularProgressIndicator();
+                      }
+                    });
               default:
                 return const CircularProgressIndicator();
             }

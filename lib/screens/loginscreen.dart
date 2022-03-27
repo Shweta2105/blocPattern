@@ -1,4 +1,4 @@
-import 'package:blocprovider/screens/homescreen.dart';
+import 'package:blocprovider/screens/notes/homescreen.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
 import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:flutter/material.dart';
