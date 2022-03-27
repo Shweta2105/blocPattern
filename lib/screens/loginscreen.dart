@@ -1,5 +1,6 @@
 import 'package:blocprovider/screens/homescreen.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
+import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:flutter/material.dart';
 
 import '../service/auth/auth_exception.dart';
@@ -116,11 +117,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       )),
                   onPressed: () async {
                     try {
-                      Navigator.of(context).pushNamed(HomeScreen.routeName);
                       await AuthService.firebase().logIn(
                         email: emailEditingController.text,
                         password: passwordEditingController.text,
                       );
+                      final user = AuthService.firebase().currentUser;
+                      if (user?.isEmailVerified ?? false) {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            HomeScreen.routeName, (route) => false);
+                      } else {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            VerifyEmailScreen.routeName, (route) => false);
+                      }
                     } on UserNotFoundException {}
                   }
                   //loginUser

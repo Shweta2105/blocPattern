@@ -1,5 +1,6 @@
 import 'package:blocprovider/screens/homescreen.dart';
 import 'package:blocprovider/screens/loginscreen.dart';
+import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:blocprovider/service/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (context) => HomeScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
         LoginScreen.routeName: (context) => LoginScreen(),
+        VerifyEmailScreen.routeName: (context) => VerifyEmailScreen(),
       },
     );
   }
