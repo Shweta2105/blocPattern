@@ -13,12 +13,18 @@ class NotesService {
   List<DatabaseNote> _notes = [];
 
   static final NotesService _shared = NotesService._sharedInstance();
-  NotesService._sharedInstance();
+  NotesService._sharedInstance() {
+    _notesStreamController =
+        StreamController<List<DatabaseNote>>.broadcast(onListen: () {
+      _notesStreamController.sink
+          .add(_notes); //if getting new update it will add
+    });
+  }
   factory NotesService() => _shared;
 
-  final _notesStreamController =
-      StreamController<List<DatabaseNote>>.broadcast();
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
+  Stream<List<DatabaseNote>> get allNotes =>
+      _notesStreamController.stream; // else it will get notes
 
   Future<DatabaseUser> getOrCreateUser({required String email}) async {
     try {
@@ -279,7 +285,7 @@ class DatabaseNote {
 
   @override
   String toString() =>
-      'Note, ID= $id, userId=$userId, text=$text,isSyncedWithCloud=$isSyncedWithCloud';
+      'Notes, id= $id, user_id=$userId, text=$text,is_synced_with_cloud=$isSyncedWithCloud';
 
   @override
   bool operator ==(covariant DatabaseNote other) => id == other.id;
@@ -289,13 +295,13 @@ class DatabaseNote {
 }
 
 const dbName = 'notes.db';
-const noteTable = 'note';
+const noteTable = 'notes';
 const userTable = 'user';
 const idColumn = 'id';
 const emailColumn = 'email';
-const userIdColumn = 'userId';
+const userIdColumn = 'user_id';
 const textColumn = 'text';
-const isSyncedWithCloudColumn = 'isSyncedWithCloud';
+const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 //createuser table
 const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
 	      "id"	INTEGER NOT NULL,
@@ -304,11 +310,11 @@ const createUserTable = '''CREATE TABLE IF NOT EXISTS "user" (
         ); ''';
 //create note table
 
-const createNoteTable = ''' CREATE TABLE IF NOT EXISTS "note" (
-	      "id"	INTEGER NOT NULL,
-	      "user_id"	INTEGER NOT NULL,
-	      "text"	TEXT,
-	      "is-synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
-	      PRIMARY KEY("id" AUTOINCREMENT),
-	      FOREIGN KEY("user_id") REFERENCES "user"("id")
-        );''';
+const createNoteTable = ''' CREATE TABLE "notes" (
+	"id"	INTEGER NOT NULL,
+	"user_id"	INTEGER NOT NULL,
+	"text"	TEXT,
+	"is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("user_id") REFERENCES "user"("id")
+);''';

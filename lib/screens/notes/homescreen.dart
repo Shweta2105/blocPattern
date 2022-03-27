@@ -25,12 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(NewNoteScreen.routeName); 
+                Navigator.of(context).pushNamed(NewNoteScreen.routeName);
               },
               icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
@@ -76,7 +70,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       switch (snapshot.connectionState) {
                         case ConnectionState.waiting:
                         case ConnectionState.active:
-                          return const Text('Waiting for your notes.........');
+                          if (snapshot.hasData) {
+                            final allNotes =
+                                snapshot.data as List<DatabaseNote>;
+                            print(allNotes);
+                            return ListView.builder(
+                              itemCount: allNotes.length,
+                              itemBuilder: (context, index) {
+                                final note = allNotes[index];
+                                return ListTile(
+                                  title: Text(
+                                    note.text,
+                                    maxLines: 1,
+                                    softWrap: true,
+                                    overflow:TextOverflow.ellipsis,
+                                    style: TextStyle(color: blackColor),
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
 
                         default:
                           return const CircularProgressIndicator();
