@@ -1,3 +1,4 @@
+import 'package:blocprovider/dialog/errordialog.dart';
 import 'package:flutter/material.dart';
 
 import '../service/auth/auth_exception.dart';
@@ -119,29 +120,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       );
                       Navigator.of(context).pushNamed(LoginScreen.routeName);
                     } on WeakPasswordAuthException catch (e) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Text('Weak Password');
-                          });
+                      showErrorDialog(context, 'Weak Password');
                     } on EmailAlreadyInUseAuthException catch (e) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Text('This Email is Already in use. ');
-                          });
+                      showErrorDialog(
+                          context, 'This Email is Already in use. ');
                     } on InvalidEmailAuthException catch (e) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Text('Invalid Email Id');
-                          });
+                      showErrorDialog(context, 'Invalid Email Id');
                     } on GenericAuthException catch (e) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const Text('Failed to register');
-                          });
+                      showErrorDialog(context, 'Failed to register');
                     }
                   }
                   //loginUser

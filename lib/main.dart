@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:blocprovider/screens/notes/homescreen.dart';
 import 'package:blocprovider/screens/loginscreen.dart';
 import 'package:blocprovider/screens/notes/newnotescreen.dart';
 import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:blocprovider/service/auth/auth_service.dart';
-import 'package:flutter/material.dart';
+
 
 import 'screens/registerscreen.dart';
 

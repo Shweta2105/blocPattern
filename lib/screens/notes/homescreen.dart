@@ -1,5 +1,7 @@
+import 'package:blocprovider/dialog/logoutdialog.dart';
 import 'package:blocprovider/screens/loginscreen.dart';
 import 'package:blocprovider/screens/notes/newnotescreen.dart';
+import 'package:blocprovider/screens/notes/notelistscreen.dart';
 import 'package:blocprovider/service/crud/notes_service.dart';
 import 'package:blocprovider/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onSelected: (value) async {
                 switch (value) {
                   case MenuAction.logout:
-                    final shouldLogOut = await showLogOutDialog(context);
+                    final shouldLogOut = await showLogoutDialog(context);
                     if (shouldLogOut) {
                       await AuthService.firebase().logOut();
 
@@ -74,19 +76,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             final allNotes =
                                 snapshot.data as List<DatabaseNote>;
                             print(allNotes);
-                            return ListView.builder(
-                              itemCount: allNotes.length,
-                              itemBuilder: (context, index) {
-                                final note = allNotes[index];
-                                return ListTile(
-                                  title: Text(
-                                    note.text,
-                                    maxLines: 1,
-                                    softWrap: true,
-                                    overflow:TextOverflow.ellipsis,
-                                    style: TextStyle(color: blackColor),
-                                  ),
-                                );
+
+                            return NoteListScreen(
+                              notes: allNotes,
+                              onDeleteNote: (note) async {
+                                await _notesService.deleteNote(id: note.id);
                               },
                             );
                           } else {
@@ -105,27 +99,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
-
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Log Out'),
-          content: Text('Are you sure you want Log Out?'),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: Text("Cancel")),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                child: Text("Confirm")),
-          ],
-        );
-      }).then((value) => value ?? false);
 }

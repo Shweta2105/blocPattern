@@ -1,3 +1,4 @@
+import 'package:blocprovider/dialog/errordialog.dart';
 import 'package:blocprovider/screens/notes/homescreen.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
 import 'package:blocprovider/screens/verifyemail.dart';
@@ -129,7 +130,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             VerifyEmailScreen.routeName, (route) => false);
                       }
-                    } on UserNotFoundException {}
+                    } on UserNotFoundException catch (e) {
+                      showErrorDialog(context, 'User not found');
+                    } on WrongPasswordAuthException catch (e) {
+                      showErrorDialog(context, 'Wrong Password');
+                    } on GenericAuthException catch (e) {
+                      showErrorDialog(
+                          context, 'failed to search user.. try again');
+                    }
                   }
                   //loginUser
                   ),
