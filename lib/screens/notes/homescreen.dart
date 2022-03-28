@@ -1,13 +1,13 @@
-import 'package:blocprovider/dialog/logoutdialog.dart';
 import 'package:blocprovider/screens/loginscreen.dart';
-import 'package:blocprovider/screens/notes/newnotescreen.dart';
+import 'package:blocprovider/screens/notes/createupdatenotescreen.dart';
 import 'package:blocprovider/screens/notes/notelistscreen.dart';
 import 'package:blocprovider/service/crud/notes_service.dart';
-import 'package:blocprovider/utils/constants.dart';
+import 'package:blocprovider/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../enums/menu_acton.dart';
 import '../../service/auth/auth_service.dart';
+import '../../utilities/dialog/logoutdialog.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -34,7 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(NewNoteScreen.routeName);
+                Navigator.of(context)
+                    .pushNamed(CreateUpdateNoteScreen.routeName);
               },
               icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
@@ -81,6 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               notes: allNotes,
                               onDeleteNote: (note) async {
                                 await _notesService.deleteNote(id: note.id);
+                              },
+                              onTap: (note) {
+                                Navigator.of(context).pushNamed(
+                                    CreateUpdateNoteScreen.routeName,
+                                    arguments: note);
                               },
                             );
                           } else {

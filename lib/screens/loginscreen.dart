@@ -1,4 +1,4 @@
-import 'package:blocprovider/dialog/errordialog.dart';
+
 import 'package:blocprovider/screens/notes/homescreen.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
 import 'package:blocprovider/screens/verifyemail.dart';
@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 import '../service/auth/auth_exception.dart';
 import '../service/auth/auth_service.dart';
-import '../utils/constants.dart';
-import '../utils/userentrytextfield.dart';
+import '../utilities/dialog/errordialog.dart';
+import '../utilities/constants.dart';
+import '../utilities/userentrytextfield.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';

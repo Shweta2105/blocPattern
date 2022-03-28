@@ -1,4 +1,4 @@
-import 'package:blocprovider/utils/constants.dart';
+import 'package:blocprovider/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class UserEntryTextField extends StatelessWidget {

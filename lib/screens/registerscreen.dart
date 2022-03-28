@@ -1,10 +1,11 @@
-import 'package:blocprovider/dialog/errordialog.dart';
+
 import 'package:flutter/material.dart';
 
+import '../utilities/dialog/errordialog.dart';
 import '../service/auth/auth_exception.dart';
 import '../service/auth/auth_service.dart';
-import '../utils/constants.dart';
-import '../utils/userentrytextfield.dart';
+import '../utilities/constants.dart';
+import '../utilities/userentrytextfield.dart';
 import 'loginscreen.dart';
 
 class RegisterScreen extends StatefulWidget {

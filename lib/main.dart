@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:blocprovider/screens/notes/homescreen.dart';
 import 'package:blocprovider/screens/loginscreen.dart';
-import 'package:blocprovider/screens/notes/newnotescreen.dart';
+import 'package:blocprovider/screens/notes/createupdatenotescreen.dart';
 import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:blocprovider/service/auth/auth_service.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (context) => RegisterScreen(),
         LoginScreen.routeName: (context) => LoginScreen(),
         VerifyEmailScreen.routeName: (context) => VerifyEmailScreen(),
-        NewNoteScreen.routeName: (context) => NewNoteScreen(),
+        CreateUpdateNoteScreen.routeName: (context) => CreateUpdateNoteScreen(),
       },
     );
   }

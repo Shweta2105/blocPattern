@@ -1,5 +1,5 @@
 import 'package:blocprovider/service/auth/auth_service.dart';
-import 'package:blocprovider/utils/constants.dart';
+import 'package:blocprovider/utilities/constants.dart';
 import 'package:flutter/material.dart';
 
 class VerifyEmailScreen extends StatefulWidget {

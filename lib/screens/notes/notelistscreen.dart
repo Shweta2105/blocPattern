@@ -1,17 +1,19 @@
-import 'package:blocprovider/dialog/deletedialog.dart';
 import 'package:blocprovider/service/crud/notes_service.dart';
 import 'package:flutter/material.dart';
 
-import '../../utils/constants.dart';
+import '../../utilities/dialog/deletedialog.dart';
+import '../../utilities/constants.dart';
 
-typedef DeleteNoteCallBack = void Function(DatabaseNote note);
+typedef NoteCallBack = void Function(DatabaseNote note);
 
 class NoteListScreen extends StatelessWidget {
-  final DeleteNoteCallBack onDeleteNote;
+  final NoteCallBack onDeleteNote;
+  final NoteCallBack onTap;
   final List<DatabaseNote> notes;
   const NoteListScreen({
     required this.notes,
     required this.onDeleteNote,
+    required this.onTap,
   });
 
   @override
@@ -21,12 +23,15 @@ class NoteListScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final note = notes[index];
         return ListTile(
+          onTap: () {
+            onTap(note);
+          },
           title: Text(
             note.text,
             maxLines: 1,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: blackColor),
+            style: const TextStyle(color: blackColor),
           ),
           trailing: IconButton(
               onPressed: () async {
