@@ -1,24 +1,27 @@
 import 'package:blocprovider/screens/loginscreen.dart';
 import 'package:blocprovider/screens/notes/createupdatenotescreen.dart';
 import 'package:blocprovider/screens/notes/notelistscreen.dart';
+import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:blocprovider/service/cloud/cloudnote.dart';
 import 'package:blocprovider/service/cloud/firebasecloudstorage.dart';
 import 'package:blocprovider/service/crud/notes_service.dart';
 import 'package:blocprovider/utilities/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../enums/menu_acton.dart';
 import '../../service/auth/auth_service.dart';
+import '../../service/auth/bloc/auth_bloc.dart';
 import '../../utilities/dialog/logoutdialog.dart';
 
-class HomeScreen extends StatefulWidget {
+class NoteViewScreen extends StatefulWidget {
   static const String routeName = '/home';
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<NoteViewScreen> createState() => _NoteViewScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _NoteViewScreenState extends State<NoteViewScreen> {
   late final FirebaseCloudStorage _notesService;
   String get userId => AuthService.firebase().currentUser!.id;
 
@@ -48,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   case MenuAction.logout:
                     final shouldLogOut = await showLogoutDialog(context);
                     if (shouldLogOut) {
-                      await AuthService.firebase().logOut();
+                      context.read<AuthBloc>().add(const AuthEventLogOut());
 
                       Navigator.of(context).pushNamedAndRemoveUntil(
                           LoginScreen.routeName, (_) => false);
@@ -76,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   return NoteListScreen(
                     notes: allNotes,
                     onDeleteNote: (note) async {
-                      await _notesService.deleteNote(documentId: note.documentId);
+                      await _notesService.deleteNote(
+                          documentId: note.documentId);
                     },
                     onTap: (note) {
                       Navigator.of(context).pushNamed(

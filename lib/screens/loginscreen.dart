@@ -1,11 +1,12 @@
-
-import 'package:blocprovider/screens/notes/homescreen.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
-import 'package:blocprovider/screens/verifyemail.dart';
+
+import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../service/auth/auth_exception.dart';
-import '../service/auth/auth_service.dart';
+
+import '../service/auth/bloc/auth_bloc.dart';
 import '../utilities/dialog/errordialog.dart';
 import '../utilities/constants.dart';
 import '../utilities/userentrytextfield.dart';
@@ -118,19 +119,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 20,
                       )),
                   onPressed: () async {
+                    final email = emailEditingController.text;
+                    final password = passwordEditingController.text;
                     try {
-                      await AuthService.firebase().logIn(
-                        email: emailEditingController.text,
-                        password: passwordEditingController.text,
-                      );
-                      final user = AuthService.firebase().currentUser;
-                      if (user?.isEmailVerified ?? false) {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            HomeScreen.routeName, (route) => false);
-                      } else {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                            VerifyEmailScreen.routeName, (route) => false);
-                      }
+                      context
+                          .read<AuthBloc>()
+                          .add(AuthEventLogin(email, password));
                     } on UserNotFoundException catch (e) {
                       showErrorDialog(context, 'User not found');
                     } on WrongPasswordAuthException catch (e) {
