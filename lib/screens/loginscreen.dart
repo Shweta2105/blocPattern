@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../service/auth/auth_exception.dart';
 
 import '../service/auth/bloc/auth_bloc.dart';
+import '../service/auth/bloc/auth_state.dart';
 import '../utilities/dialog/errordialog.dart';
 import '../utilities/constants.dart';
 import '../utilities/userentrytextfield.dart';
@@ -111,31 +112,36 @@ class _LoginScreenState extends State<LoginScreen> {
             Container(
               height: 50,
               padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: RaisedButton(
-                  textColor: Colors.white,
-                  color: Colors.transparent,
-                  child: const Text('Login',
-                      style: TextStyle(
-                        fontSize: 20,
-                      )),
-                  onPressed: () async {
-                    final email = emailEditingController.text;
-                    final password = passwordEditingController.text;
-                    try {
+              child: BlocListener<AuthBloc, AuthState>(
+                listener: (context, state) async {
+                  if (state is AuthStateLoggedOut) {
+                    if (state.exception is UserNotFoundException) {
+                      await showErrorDialog(context, 'User not found.');
+                    } else if (state.exception is WrongPasswordAuthException) {
+                      await showErrorDialog(context, 'Wrong credentials');
+                    } else if (state.exception is GenericAuthException) {
+                      await showErrorDialog(context, '');
+                    }
+                  }
+                },
+                child: RaisedButton(
+                    textColor: Colors.white,
+                    color: Colors.transparent,
+                    child: const Text('Login',
+                        style: TextStyle(
+                          fontSize: 20,
+                        )),
+                    onPressed: () async {
+                      final email = emailEditingController.text;
+                      final password = passwordEditingController.text;
+
                       context
                           .read<AuthBloc>()
                           .add(AuthEventLogin(email, password));
-                    } on UserNotFoundException catch (e) {
-                      showErrorDialog(context, 'User not found');
-                    } on WrongPasswordAuthException catch (e) {
-                      showErrorDialog(context, 'Wrong Password');
-                    } on GenericAuthException catch (e) {
-                      showErrorDialog(
-                          context, 'failed to search user.. try again');
                     }
-                  }
-                  //loginUser
-                  ),
+                    //loginUser
+                    ),
+              ),
             ),
             SizedBox(
               height: 30,
