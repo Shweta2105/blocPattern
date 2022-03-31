@@ -71,13 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: <Widget>[
               Text(
-                "BookStoreApp",
+                "Note App",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.orange.withOpacity(0.8)),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   isValid: emailValid,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   isValid: passwordValid,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
@@ -172,6 +172,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     //loginUser
                     ),
               ),
+              TextButton(
+                  onPressed: () {
+                    context
+                        .read<AuthBloc>()
+                        .add(const AuthEventForgotPassword());
+                  },
+                  child: const Text(
+                    'Forgot Password',
+                    style: TextStyle(color: Colors.orange),
+                  ))
             ],
           ),
         ),

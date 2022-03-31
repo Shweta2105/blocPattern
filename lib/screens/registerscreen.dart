@@ -48,121 +48,108 @@ class _RegisterScreenState extends State<RegisterScreen> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: 30,
-              ),
-              Text(
-                "BookStoreApp",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange.withOpacity(0.8)),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 100,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: UserEntryTextField(
-                  obscureText: false,
-                  checkValidation: (String value) {
-                    nameValid = value.length <= 15;
-                  },
-                  controller: nameEditingController,
-                  labelText: 'Name',
-                  isValid: nameValid,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 100,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: UserEntryTextField(
-                  obscureText: false,
-                  checkValidation: (value) {
-                    if (emailRegExp.hasMatch(value)) {
-                      emailValid = true;
-                    } else {
-                      emailValid = false;
-                    }
-                    setState(() {});
-                  },
-                  controller: emailEditingController,
-                  labelText: 'Email',
-                  isValid: emailValid,
+                Text(
+                  "Note App",
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange.withOpacity(0.8)),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 100,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: UserEntryTextField(
-                  obscureText: true,
-                  checkValidation: (value) {
-                    if (passwordRegExp.hasMatch(value)) {
-                      passwordValid = true;
-                    } else {
-                      passwordValid = false;
-                    }
-                    setState(() {});
-                  },
-                  controller: passwordEditingController,
-                  labelText: 'Password',
-                  isValid: passwordValid,
+                SizedBox(
+                  height: 30,
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: RaisedButton(
-                    textColor: Colors.white,
-                    color: Colors.transparent,
-                    child: const Text('Sign In',
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
-                    onPressed: () {
-                      final email = emailEditingController.text;
-                      final password = passwordEditingController.text;
+                Container(
+                  height: 100,
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: UserEntryTextField(
+                    obscureText: false,
+                    checkValidation: (value) {
+                      if (emailRegExp.hasMatch(value)) {
+                        emailValid = true;
+                      } else {
+                        emailValid = false;
+                      }
+                      setState(() {});
+                    },
+                    controller: emailEditingController,
+                    labelText: 'Email',
+                    isValid: emailValid,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  height: 100,
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: UserEntryTextField(
+                    obscureText: true,
+                    checkValidation: (value) {
+                      if (passwordRegExp.hasMatch(value)) {
+                        passwordValid = true;
+                      } else {
+                        passwordValid = false;
+                      }
+                      setState(() {});
+                    },
+                    controller: passwordEditingController,
+                    labelText: 'Password',
+                    isValid: passwordValid,
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: RaisedButton(
+                      textColor: Colors.white,
+                      color: Colors.transparent,
+                      child: const Text('Sign In',
+                          style: TextStyle(
+                            fontSize: 20,
+                          )),
+                      onPressed: () {
+                        final email = emailEditingController.text;
+                        final password = passwordEditingController.text;
 
-                      context
-                          .read<AuthBloc>()
-                          .add(AuthEventRegister(email, password));
-                    }
-                    //loginUser
-                    //loginUser
-                    ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: FlatButton(
-                    textColor: Colors.orange.withOpacity(0.8),
-                    color: Colors.transparent,
-                    child: const Text('Already registered? LogIn Here!',
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
-                    onPressed: () {
-                      context.read<AuthBloc>().add(const AuthEventLogOut());
-                    }
-                    //loginUser
-                    ),
-              ),
-            ],
+                        context
+                            .read<AuthBloc>()
+                            .add(AuthEventRegister(email, password));
+                      }
+                      //loginUser
+                      //loginUser
+                      ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  height: 50,
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: FlatButton(
+                      textColor: Colors.orange.withOpacity(0.8),
+                      color: Colors.transparent,
+                      child: const Text('Already registered? LogIn Here!',
+                          style: TextStyle(
+                            fontSize: 20,
+                          )),
+                      onPressed: () {
+                        context.read<AuthBloc>().add(const AuthEventLogOut());
+                      }
+                      //loginUser
+                      ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:blocprovider/helpers/loading/loadingscreen.dart';
+import 'package:blocprovider/screens/forgotpasswordscreen.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
 import 'package:blocprovider/service/auth/bloc/auth_bloc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
@@ -68,6 +69,8 @@ class HomePage extends StatelessWidget {
         return VerifyEmailScreen();
       } else if (state is AuthStateLoggedOut) {
         return LoginScreen();
+      } else if (state is AuthStateForgotPassword) {
+        return const ForgotPasswordScreen();
       } else if (state is AuthStateRegistering) {
         return RegisterScreen();
       } else {
