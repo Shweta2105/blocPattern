@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool emailValid = true;
   bool passwordValid = true;
-  CloseDialog? _closeDialogHandler;
+
   @override
   void initState() {
     super.initState();
@@ -46,14 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
-          final closeDialog = _closeDialogHandler;
-          if (!state.isLoading && closeDialog != null) {
-            closeDialog();
-            _closeDialogHandler = null;
-          } else if (state.isLoading && closeDialog == null) {
-            _closeDialogHandler =
-                showLoadingDialog(context: context, text: 'loading...');
-          }
           if (state.exception is UserNotFoundException) {
             await showErrorDialog(context, 'User not found.');
           } else if (state.exception is WrongPasswordAuthException) {
