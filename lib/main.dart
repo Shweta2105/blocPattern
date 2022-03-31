@@ -1,3 +1,4 @@
+import 'package:blocprovider/screens/registerscreen.dart';
 import 'package:blocprovider/service/auth/bloc/auth_bloc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:blocprovider/service/auth/bloc/auth_state.dart';
@@ -10,7 +11,6 @@ import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:blocprovider/service/auth/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'screens/registerscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -40,10 +40,6 @@ class MyApp extends StatelessWidget {
       ),
       // RegisterScreen(),
       routes: {
-        NoteViewScreen.routeName: (context) => NoteViewScreen(),
-        RegisterScreen.routeName: (context) => RegisterScreen(),
-        LoginScreen.routeName: (context) => LoginScreen(),
-        VerifyEmailScreen.routeName: (context) => VerifyEmailScreen(),
         CreateUpdateNoteScreen.routeName: (context) =>
             const CreateUpdateNoteScreen(),
       },
@@ -64,6 +60,8 @@ class HomePage extends StatelessWidget {
         return VerifyEmailScreen();
       } else if (state is AuthStateLoggedOut) {
         return LoginScreen();
+      } else if (state is AuthStateRegistering) {
+        return RegisterScreen();
       } else {
         return const Scaffold(
           body: CircularProgressIndicator(),

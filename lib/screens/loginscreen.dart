@@ -1,6 +1,7 @@
 import 'package:blocprovider/screens/registerscreen.dart';
 
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
+import 'package:blocprovider/utilities/dialog/loadingdialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool emailValid = true;
   bool passwordValid = true;
-
+  CloseDialog? _closeDialogHandler;
   @override
   void initState() {
     super.initState();
@@ -42,88 +43,96 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: homeColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Login",
-          style: TextStyle(fontSize: 25),
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) async {
+        if (state is AuthStateLoggedOut) {
+          final closeDialog = _closeDialogHandler;
+          if (!state.isLoading && closeDialog != null) {
+            closeDialog();
+            _closeDialogHandler = null;
+          } else if (state.isLoading && closeDialog == null) {
+            _closeDialogHandler =
+                showLoadingDialog(context: context, text: 'loading...');
+          }
+          if (state.exception is UserNotFoundException) {
+            await showErrorDialog(context, 'User not found.');
+          } else if (state.exception is WrongPasswordAuthException) {
+            await showErrorDialog(context, 'Wrong credentials');
+          } else if (state.exception is GenericAuthException) {
+            await showErrorDialog(context, 'Authentication Error');
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: homeColor,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Login",
+            style: TextStyle(fontSize: 25),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Text(
-              "BookStoreApp",
-              style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange.withOpacity(0.8)),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              height: 100,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: UserEntryTextField(
-                obscureText: false,
-                checkValidation: (value) {
-                  if (emailRegExp.hasMatch(value)) {
-                    emailValid = true;
-                  } else {
-                    emailValid = false;
-                  }
-                  setState(() {});
-                },
-                controller: emailEditingController,
-                labelText: 'Email',
-                isValid: emailValid,
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "BookStoreApp",
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.orange.withOpacity(0.8)),
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              height: 100,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: UserEntryTextField(
-                obscureText: true,
-                checkValidation: (value) {
-                  if (passwordRegExp.hasMatch(value)) {
-                    passwordValid = true;
-                  } else {
-                    passwordValid = false;
-                  }
-                  setState(() {});
-                },
-                controller: passwordEditingController,
-                labelText: 'Password',
-                isValid: passwordValid,
+              SizedBox(
+                height: 30,
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: BlocListener<AuthBloc, AuthState>(
-                listener: (context, state) async {
-                  if (state is AuthStateLoggedOut) {
-                    if (state.exception is UserNotFoundException) {
-                      await showErrorDialog(context, 'User not found.');
-                    } else if (state.exception is WrongPasswordAuthException) {
-                      await showErrorDialog(context, 'Wrong credentials');
-                    } else if (state.exception is GenericAuthException) {
-                      await showErrorDialog(context, '');
+              Container(
+                height: 100,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: UserEntryTextField(
+                  obscureText: false,
+                  checkValidation: (value) {
+                    if (emailRegExp.hasMatch(value)) {
+                      emailValid = true;
+                    } else {
+                      emailValid = false;
                     }
-                  }
-                },
+                    setState(() {});
+                  },
+                  controller: emailEditingController,
+                  labelText: 'Email',
+                  isValid: emailValid,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                height: 100,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                child: UserEntryTextField(
+                  obscureText: true,
+                  checkValidation: (value) {
+                    if (passwordRegExp.hasMatch(value)) {
+                      passwordValid = true;
+                    } else {
+                      passwordValid = false;
+                    }
+                    setState(() {});
+                  },
+                  controller: passwordEditingController,
+                  labelText: 'Password',
+                  isValid: passwordValid,
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: RaisedButton(
                     textColor: Colors.white,
                     color: Colors.transparent,
@@ -142,35 +151,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     //loginUser
                     ),
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Does not have account?',
-              style: TextStyle(
-                  fontSize: 15, color: Colors.orange.withOpacity(0.8)),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 50,
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: FlatButton(
-                  textColor: Colors.orange.withOpacity(0.8),
-                  color: Colors.transparent,
-                  child: const Text('Sign in',
-                      style: TextStyle(
-                        fontSize: 20,
-                      )),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(RegisterScreen.routeName);
-                  }
-                  //loginUser
-                  ),
-            ),
-          ],
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                'Does not have account?',
+                style: TextStyle(
+                    fontSize: 15, color: Colors.orange.withOpacity(0.8)),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: FlatButton(
+                    textColor: Colors.orange.withOpacity(0.8),
+                    color: Colors.transparent,
+                    child: const Text('Sign in',
+                        style: TextStyle(
+                          fontSize: 20,
+                        )),
+                    onPressed: () {
+                      context
+                          .read<AuthBloc>()
+                          .add(const AuthEventShouldRegister());
+                    }
+                    //loginUser
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
