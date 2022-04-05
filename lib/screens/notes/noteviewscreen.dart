@@ -1,10 +1,10 @@
+import 'package:blocprovider/extensions/buildcontext/loc.dart';
 import 'package:blocprovider/screens/loginscreen.dart';
 import 'package:blocprovider/screens/notes/createupdatenotescreen.dart';
 import 'package:blocprovider/screens/notes/notelistscreen.dart';
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:blocprovider/service/cloud/cloudnote.dart';
 import 'package:blocprovider/service/cloud/firebasecloudstorage.dart';
-import 'package:blocprovider/service/crud/notes_service.dart';
 import 'package:blocprovider/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +13,10 @@ import '../../enums/menu_acton.dart';
 import '../../service/auth/auth_service.dart';
 import '../../service/auth/bloc/auth_bloc.dart';
 import '../../utilities/dialog/logoutdialog.dart';
+
+extension Count<T extends Iterable> on Stream<T> {
+  Stream<int> get getLength => map((event) => event.length);
+}
 
 class NoteViewScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -35,7 +39,16 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Notes'),
+        title: StreamBuilder(
+            stream: _notesService.allNotes(ownerUserId: userId).getLength,
+            builder: (context, AsyncSnapshot<int> snapshot) {
+              if (snapshot.hasData) {
+                final noteCount = snapshot.data ?? 0;
+                final text = context.loc.notes_title(noteCount);
+                return Text(text);
+              }
+              return const Text('');
+            }),
         actions: [
           IconButton(
               onPressed: () {
@@ -61,7 +74,11 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
               },
               itemBuilder: (context) {
                 return [
-                  PopupMenuItem(child: Text('LogOut'), value: MenuAction.logout)
+                  PopupMenuItem(
+                      child: Text(
+                        context.loc.logout_button,
+                      ),
+                      value: MenuAction.logout)
                 ];
               })
         ],

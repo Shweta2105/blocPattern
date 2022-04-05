@@ -1,3 +1,4 @@
+import 'package:blocprovider/extensions/buildcontext/loc.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
 
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
@@ -47,11 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
           if (state.exception is UserNotFoundException) {
-            await showErrorDialog(context, 'User not found.');
+            await showErrorDialog(
+                context, context.loc.login_error_cannot_find_user);
           } else if (state.exception is WrongPasswordAuthException) {
-            await showErrorDialog(context, 'Wrong credentials');
+            await showErrorDialog(
+                context, context.loc.login_error_wrong_credentials);
           } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, 'Authentication Error');
+            await showErrorDialog(context, context.loc.login_error_auth_error);
           }
         }
       },
@@ -62,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
           elevation: 0.0,
           automaticallyImplyLeading: false,
           title: Text(
-            "Login",
+            context.loc.login,
             style: TextStyle(fontSize: 25),
           ),
           centerTitle: true,
@@ -71,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: <Widget>[
               Text(
-                "Note App",
+                "Check Notes",
                 style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -147,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 30,
               ),
               Text(
-                'Does not have account?',
+                context.loc.login_view_not_registered_yet,
                 style: TextStyle(
                     fontSize: 15, color: Colors.orange.withOpacity(0.8)),
               ),
@@ -160,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: FlatButton(
                     textColor: Colors.orange.withOpacity(0.8),
                     color: Colors.transparent,
-                    child: const Text('Sign in',
+                    child: Text(context.loc.register,
                         style: TextStyle(
                           fontSize: 20,
                         )),
@@ -178,8 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         .read<AuthBloc>()
                         .add(const AuthEventForgotPassword());
                   },
-                  child: const Text(
-                    'Forgot Password',
+                  child: Text(
+                    context.loc.forgot_password,
                     style: TextStyle(color: Colors.orange),
                   ))
             ],

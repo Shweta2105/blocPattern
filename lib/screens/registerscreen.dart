@@ -1,3 +1,4 @@
+import 'package:blocprovider/extensions/buildcontext/loc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:flutter/material.dart';
 
@@ -32,19 +33,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
       listener: (context, state) async {
         if (state is AuthStateRegistering) {
           if (state.exception is WeakPasswordAuthException) {
-            await showErrorDialog(context, 'Weak Password');
+            await showErrorDialog(
+                context, context.loc.register_error_weak_password);
           } else if (state.exception is EmailAlreadyInUseAuthException) {
-            await showErrorDialog(context, 'Email is already used');
+            await showErrorDialog(
+                context, context.loc.register_error_email_already_in_use);
           } else if (state.exception is InvalidEmailAuthException) {
-            await showErrorDialog(context, 'Invalid Email');
+            await showErrorDialog(
+                context, context.loc.register_error_invalid_email);
           } else if (state.exception is GenericAuthException) {
-            await showErrorDialog(context, 'Failed to register');
+            await showErrorDialog(context, context.loc.register_error_generic);
           }
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Register'),
+          title: Text(context.loc.register),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -56,13 +60,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 30,
                 ),
                 Text(
-                  "Note App",
+                  "Check Notes",
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       color: Colors.orange.withOpacity(0.8)),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
                 Container(
@@ -113,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: RaisedButton(
                       textColor: Colors.white,
                       color: Colors.transparent,
-                      child: const Text('Sign In',
+                      child: Text(context.loc.register,
                           style: TextStyle(
                             fontSize: 20,
                           )),
@@ -138,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: FlatButton(
                       textColor: Colors.orange.withOpacity(0.8),
                       color: Colors.transparent,
-                      child: const Text('Already registered? LogIn Here!',
+                      child: Text(context.loc.register_view_already_registered,
                           style: TextStyle(
                             fontSize: 20,
                           )),

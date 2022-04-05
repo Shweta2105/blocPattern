@@ -12,6 +12,7 @@ import 'package:blocprovider/screens/notes/createupdatenotescreen.dart';
 import 'package:blocprovider/screens/verifyemail.dart';
 import 'package:blocprovider/service/auth/auth_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthService.firebase().initialize();
     return MaterialApp(
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(

@@ -1,3 +1,4 @@
+import 'package:blocprovider/extensions/buildcontext/loc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_bloc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:blocprovider/service/auth/bloc/auth_state.dart';
@@ -38,28 +39,27 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             await showPasswordResetSentDialog(context);
           }
           if (state.exception != null) {
-            await showErrorDialog(context,
-                'Could not process your request. Please make sure are registerd user');
+            await showErrorDialog(
+                context, context.loc.forgot_password_view_generic_error);
           }
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Forgot Password'),
+          title: Text(context.loc.forgot_password),
         ),
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: [
-              const Text(
-                  'FORGOT PASSWORD? Enter your registerd email id and we will send password reset link'),
+              Text(context.loc.forgot_password_view_prompt),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
                 autofocus: true,
                 controller: _controller,
-                decoration:
-                    const InputDecoration(hintText: 'Your Email Address'),
+                decoration: InputDecoration(
+                    hintText: context.loc.email_text_field_placeholder),
               ),
               TextButton(
                 onPressed: () {
@@ -68,13 +68,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       .read<AuthBloc>()
                       .add(AuthEventForgotPassword(email: email));
                 },
-                child: const Text('Send reset Password Link '),
+                child: Text(context.loc.forgot_password_view_send_me_link),
               ),
               TextButton(
                 onPressed: () {
                   context.read<AuthBloc>().add(const AuthEventLogOut());
                 },
-                child: const Text('Back to Login '),
+                child: Text(context.loc.forgot_password_view_back_to_login),
               )
             ],
           ),

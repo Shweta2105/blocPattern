@@ -1,8 +1,8 @@
+import 'package:blocprovider/extensions/buildcontext/loc.dart';
 import 'package:blocprovider/service/auth/auth_service.dart';
 import 'package:blocprovider/utilities/dialog/cannotshareemptydialog.dart';
 import 'package:blocprovider/utilities/generics/get_arguments.dart';
 import 'package:blocprovider/service/cloud/firebasecloudstorage.dart';
-import 'package:blocprovider/service/cloud/cloudexception.dart';
 import 'package:blocprovider/service/cloud/cloudnote.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
@@ -91,7 +91,9 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Note'),
+        title: Text(
+          context.loc.note,
+        ),
         actions: [
           IconButton(
               onPressed: () async {
@@ -105,22 +107,26 @@ class _CreateUpdateNoteScreenState extends State<CreateUpdateNoteScreen> {
               icon: const Icon(Icons.share))
         ],
       ),
-      body: FutureBuilder(
-          future: createOrGetExistingNote(context),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                setUpTextControllerListener();
-                return TextField(
-                  controller: _textEditingController,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration(hintText: 'Start typing here...'),
-                );
-              default:
-                return CircularProgressIndicator();
-            }
-          }),
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: FutureBuilder(
+            future: createOrGetExistingNote(context),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.done:
+                  setUpTextControllerListener();
+                  return TextField(
+                    controller: _textEditingController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                        hintText: context.loc.start_typing_your_note),
+                  );
+                default:
+                  return const CircularProgressIndicator();
+              }
+            }),
+      ),
     );
   }
 }

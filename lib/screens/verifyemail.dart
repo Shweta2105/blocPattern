@@ -1,5 +1,4 @@
-import 'package:blocprovider/screens/registerscreen.dart';
-import 'package:blocprovider/service/auth/auth_service.dart';
+import 'package:blocprovider/extensions/buildcontext/loc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_bloc.dart';
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
 import 'package:blocprovider/utilities/constants.dart';
@@ -18,21 +17,23 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Verify Email'),
+        title: Text(context.loc.verify_email),
       ),
       body: Column(children: [
-        const Text(
-            'We have sent email verification. Please open it to verify your account'),
-        const Text(
-            'If you have not received  a verification email yet, press the button'),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            context.loc.verify_email_view_prompt,
+          ),
+        ),
         TextButton(
           onPressed: () {
             context
                 .read<AuthBloc>()
                 .add(const AuthEventSendEMailVerification());
           },
-          child: const Text(
-            'Send Email Verification',
+          child: Text(
+            context.loc.verify_email_send_email_verification,
             style: TextStyle(color: blackColor),
           ),
         ),
@@ -40,7 +41,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           onPressed: () {
             context.read<AuthBloc>().add(const AuthEventLogOut());
           },
-          child: const Text('ReStart'),
+          child: Text(context.loc.restart),
         )
       ]),
     );
