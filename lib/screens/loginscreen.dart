@@ -1,4 +1,5 @@
 import 'package:blocprovider/extensions/buildcontext/loc.dart';
+import 'package:blocprovider/l10n/language.dart';
 import 'package:blocprovider/screens/registerscreen.dart';
 
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
@@ -66,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
           automaticallyImplyLeading: false,
           title: Text(
             context.loc.login,
-            style: TextStyle(fontSize: 25),
+            style: TextStyle(fontSize: 25, color: Colors.orange),
           ),
           centerTitle: true,
         ),
