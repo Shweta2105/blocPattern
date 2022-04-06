@@ -1,9 +1,5 @@
 import 'package:blocprovider/extensions/buildcontext/loc.dart';
-import 'package:blocprovider/l10n/language.dart';
-import 'package:blocprovider/screens/registerscreen.dart';
-
 import 'package:blocprovider/service/auth/bloc/auth_events.dart';
-import 'package:blocprovider/utilities/dialog/loadingdialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

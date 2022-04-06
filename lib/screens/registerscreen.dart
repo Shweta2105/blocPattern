@@ -8,10 +8,8 @@ import '../service/auth/bloc/auth_bloc.dart';
 import '../service/auth/bloc/auth_state.dart';
 import '../utilities/dialog/errordialog.dart';
 import '../service/auth/auth_exception.dart';
-import '../service/auth/auth_service.dart';
 import '../utilities/constants.dart';
 import '../utilities/userentrytextfield.dart';
-import 'loginscreen.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/signup';
